@@ -45,7 +45,7 @@ class AuthMockService implements AuthService {
       name: name,
       email: email,
       //Pega o caminho da imagem
-      imageUrl: image?.path ?? '/assets/images/...',
+      imageUrl: image?.path ?? 'assets\images\avatar.png',
     );
     //Add o user no map
     _users.putIfAbsent(email, () => newUser);
