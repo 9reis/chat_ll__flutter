@@ -4,7 +4,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key});
+  const AuthForm({Key? key, required this.onSubmit}) : super(key: key);
+
+  final void Function(AuthFormData) onSubmit;
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -42,6 +44,7 @@ class _AuthFormState extends State<AuthForm> {
                   },
                 ),
               TextFormField(
+                keyboardType: TextInputType.emailAddress,
                 initialValue: _formData.email,
                 onChanged: (email) => _formData.email = email,
                 key: const ValueKey('email'),
@@ -92,7 +95,10 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   void _submit() {
+    //Valida o formulario
     final isValid = _formKey.currentState?.validate() ?? false;
     if (!isValid) return;
+
+    widget.onSubmit(_formData);
   }
 }
