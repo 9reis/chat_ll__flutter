@@ -1,9 +1,14 @@
+import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:chat_ll__flutter/core/models/chat_user.dart';
 import 'package:chat_ll__flutter/core/services/auth/auth_service.dart';
 
 class AuthMockService implements AuthService {
+  //Static --> Pertence a classe
+  // - Utiliza instanciando a classe ou através do nome da classe
+
   // Independente da instancia de AuthMockService
   // Vai receber os mesmos users
   static Map<String, ChatUser> _users = {};
@@ -12,15 +17,54 @@ class AuthMockService implements AuthService {
   // dentro da mesma aplicação
   static ChatUser? _currentUser;
 
+  static MultiStreamController<ChatUser?>? _controller;
+  static final _userStream = Stream<ChatUser?>.multi((controller) {
+    _controller = controller;
+    //Gera um usuário null para poder ir para tela inicial
+    _updateUser(null);
+  });
+  @override
   ChatUser? get currentUser {
     return _currentUser;
   }
 
-  Stream<ChatUser?> get userChanges {}
+  @override
+  Stream<ChatUser?> get userChanges {
+    return _userStream;
+  }
 
+  @override
   Future<void> signup(
-      String nome, String email, String password, File image) async {}
+    String name,
+    String email,
+    String password,
+    File image,
+  ) async {
+    final newUser = ChatUser(
+      id: Random().nextDouble().toString(),
+      name: name,
+      email: email,
+      //Pega o caminho da imagem
+      imageUrl: image.path,
+    );
+    //Add o user no map
+    _users.putIfAbsent(email, () => newUser);
+    //Faz o login após cadastrar
+    _updateUser(newUser);
+  }
 
-  Future<void> login(String email, String password) async {}
-  Future<void> logout() async {}
+  @override
+  Future<void> login(String email, String password) async {
+    _updateUser(_users[email]);
+  }
+
+  @override
+  Future<void> logout() async {
+    _updateUser(null);
+  }
+
+  static void _updateUser(ChatUser? user) {
+    _currentUser = user;
+    _controller?.add(_currentUser);
+  }
 }

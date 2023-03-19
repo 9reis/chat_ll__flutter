@@ -13,7 +13,7 @@ abstract class AuthService {
   Stream<ChatUser?> get userChanges;
 
   // Onde será alterado o estado do usuario logado
-  Future<void> signup(String nome, String email, String password, File image);
+  Future<void> signup(String name, String email, String password, File image);
   Future<void> login(String email, String password);
   Future<void> logout();
 }
