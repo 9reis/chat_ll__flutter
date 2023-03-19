@@ -33,12 +33,26 @@ class _AuthFormState extends State<AuthForm> {
                   onChanged: (name) => _formData.name = name,
                   key: const ValueKey('name'),
                   decoration: const InputDecoration(labelText: 'Nome'),
+                  validator: (_name) {
+                    final name = _name ?? "";
+                    if (name.trim().length < 5) {
+                      return 'O nome deve ter no minimo 5 caracters';
+                    }
+                    return null;
+                  },
                 ),
               TextFormField(
                 initialValue: _formData.email,
                 onChanged: (email) => _formData.email = email,
                 key: const ValueKey('email'),
                 decoration: const InputDecoration(labelText: 'E-mail'),
+                validator: (_email) {
+                  final email = _email ?? '';
+                  if (!email.contains('@')) {
+                    return 'E-mail informado é invalido';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 initialValue: _formData.password,
@@ -47,6 +61,13 @@ class _AuthFormState extends State<AuthForm> {
                 //Esconde a senha
                 obscureText: true,
                 decoration: const InputDecoration(labelText: 'Senha'),
+                validator: (_password) {
+                  final password = _password ?? '';
+                  if (password.length < 6) {
+                    return 'A senha deve ter no minimo 6 caracters';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 12),
               ElevatedButton(
@@ -71,6 +92,7 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   void _submit() {
-    _formKey.currentState?.validate();
+    final isValid = _formKey.currentState?.validate() ?? false;
+    if (!isValid) return;
   }
 }
