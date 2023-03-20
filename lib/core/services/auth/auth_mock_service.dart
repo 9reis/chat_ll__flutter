@@ -8,9 +8,9 @@ import 'package:chat_ll__flutter/core/services/auth/auth_service.dart';
 class AuthMockService implements AuthService {
   //Criando user padrão
   static final _defaultUser = ChatUser(
-    id: '1',
-    name: 'teste',
-    email: 'teste@teste.com',
+    id: '456',
+    name: 'Ana',
+    email: 'Ana@gmail.com',
     imageUrl: 'assets\images\avatar.png',
   );
   //Static --> Pertence a classe
