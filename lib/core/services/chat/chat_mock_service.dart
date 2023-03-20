@@ -13,7 +13,7 @@ class ChatMockService implements ChatService {
       createdAt: DateTime.now(),
       userId: '123',
       userName: 'Bia',
-      userImageUrl: 'assets\images\avatar.png',
+      userImageUrl: 'assets/images/avatar.png',
     ),
     ChatMessage(
       id: '2',
@@ -21,7 +21,7 @@ class ChatMockService implements ChatService {
       createdAt: DateTime.now(),
       userId: '456',
       userName: 'Ana',
-      userImageUrl: 'assets\images\avatar.png',
+      userImageUrl: 'assets/images/avatar.png',
     ),
     ChatMessage(
       id: '3',
@@ -29,7 +29,7 @@ class ChatMockService implements ChatService {
       createdAt: DateTime.now(),
       userId: '789',
       userName: 'Bia',
-      userImageUrl: 'assets\images\avatar.png',
+      userImageUrl: 'assets/images/avatar.png',
     ),
   ];
 
