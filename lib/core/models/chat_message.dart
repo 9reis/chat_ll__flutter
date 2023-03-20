@@ -9,10 +9,10 @@ class ChatMessage {
   final String userName;
   final String userImageUrl;
 
-  ChatMessage({
+  const ChatMessage({
     required this.id,
     required this.text,
-    required this.createdAt, 
+    required this.createdAt,
     required this.userId,
     required this.userName,
     required this.userImageUrl,
