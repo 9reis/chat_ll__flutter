@@ -6,22 +6,30 @@ import 'package:chat_ll__flutter/core/models/chat_user.dart';
 import 'package:chat_ll__flutter/core/services/auth/auth_service.dart';
 
 class AuthMockService implements AuthService {
+  //Criando user padrão
+  static final _defaultUser = ChatUser(
+    id: '1',
+    name: 'teste',
+    email: 'teste@teste.com',
+    imageUrl: 'assets\images\avatar.png',
+  );
   //Static --> Pertence a classe
   // - Utiliza instanciando a classe ou através do nome da classe
 
   // Independente da instancia de AuthMockService
   // Vai receber os mesmos users
-  static Map<String, ChatUser> _users = {};
+  static Map<String, ChatUser> _users = {_defaultUser.email: _defaultUser};
 
   //Static pois ñ faz sentido ter multiplos usuários
   // dentro da mesma aplicação
   static ChatUser? _currentUser;
 
   static MultiStreamController<ChatUser?>? _controller;
+
   static final _userStream = Stream<ChatUser?>.multi((controller) {
     _controller = controller;
     //Gera um usuário null para poder ir para tela inicial
-    _updateUser(null);
+    _updateUser(_defaultUser);
   });
   @override
   ChatUser? get currentUser {
