@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:chat_ll__flutter/core/models/chat_user.dart';
+import 'package:chat_ll__flutter/core/services/auth/auth_mock_service.dart';
 
 abstract class AuthService {
   // Pega o usuario logado
@@ -21,4 +22,10 @@ abstract class AuthService {
   );
   Future<void> login(String email, String password);
   Future<void> logout();
+
+  //Permite salvar uma instancia e retornar ele
+  // Podendo utilizar todos os met que essa instancia possui
+  factory AuthService() {
+    return AuthMockService();
+  }
 }
