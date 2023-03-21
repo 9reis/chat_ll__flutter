@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:chat_ll__flutter/components/messages.dart';
 import 'package:chat_ll__flutter/components/new_message.dart';
+import 'package:chat_ll__flutter/core/models/chat_notification.dart';
 import 'package:chat_ll__flutter/core/services/auth/auth_service.dart';
 import 'package:chat_ll__flutter/core/services/notification/chat_notification_service.dart';
 import 'package:chat_ll__flutter/pages/notification_page.dart';
@@ -94,6 +97,16 @@ class ChatePage extends StatelessWidget {
           ],
         ),
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () {
+      //     Provider.of<ChatNotificationService>(context, listen: false)
+      //         .add(ChatNotification(
+      //       title: 'Mais ma notificação',
+      //       body: Random().nextDouble().toString(),
+      //     ));
+      //   },
+      // ),
     );
   }
 }
