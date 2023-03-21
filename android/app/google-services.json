@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "977361391160",
+    "project_id": "reis-chat",
+    "storage_bucket": "reis-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977361391160:android:863184b8a67ceb554f20cd",
+        "android_client_info": {
+          "package_name": "br.com.novereistechnology.chat_ll__flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977361391160-l4uro115q36j94nmk8409p3qprig7jo6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyX8y_SijgtsYL-BbuPC5cIPLAiktXOSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977361391160-l4uro115q36j94nmk8409p3qprig7jo6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
