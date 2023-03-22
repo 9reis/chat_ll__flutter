@@ -6,24 +6,36 @@ import 'package:chat_ll__flutter/pages/auth_page.dart';
 import 'package:chat_ll__flutter/pages/chat_page.dart';
 import 'package:chat_ll__flutter/pages/loading_page.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class AuthOrAppPage extends StatelessWidget {
   const AuthOrAppPage({super.key});
+  //Para poder interagir com o Firebase
+  Future<void> init(BuildContext context) async {
+    await Firebase.initializeApp();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //Se o usuário está logado
-      body: StreamBuilder<ChatUser?>(
-        stream: AuthService().userChanges,
-        builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return LoadingPage();
-          } else {
-            return snapshot.hasData ? ChatePage() : AuthPage();
-          }
-        },
-      ),
+    //Se o usuário está logado
+    return FutureBuilder(
+      future: init(context),
+      builder: (ctx, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return LoadingPage();
+        } else {
+          return StreamBuilder<ChatUser?>(
+            stream: AuthService().userChanges,
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return LoadingPage();
+              } else {
+                return snapshot.hasData ? ChatePage() : AuthPage();
+              }
+            },
+          );
+        }
+      },
     );
   }
 }
