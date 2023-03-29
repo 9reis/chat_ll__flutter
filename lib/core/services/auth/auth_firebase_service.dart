@@ -10,9 +10,13 @@ class AuthFirebaseService implements AuthService {
   static ChatUser? _currentUser;
 
   static final _userStream = Stream<ChatUser?>.multi((controller) async {
+    // Monitora as mudanças na parte de autenticação
     final authChanges = FirebaseAuth.instance.authStateChanges();
+    //Quando houver uma modificação
     await for (final user in authChanges) {
+      //Seta o user corrente
       _currentUser = user == null ? null : _toChatUser(user);
+      //Add o user dentro da stream.
       controller.add(_currentUser);
     }
     //_controller = controller;
@@ -49,7 +53,12 @@ class AuthFirebaseService implements AuthService {
   }
 
   @override
-  Future<void> login(String email, String password) async {}
+  Future<void> login(String email, String password) async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+  }
 
   @override
   Future<void> logout() async {
