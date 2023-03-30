@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:chat_ll__flutter/core/models/chat_user.dart';
 import 'package:chat_ll__flutter/core/services/auth/auth_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -53,9 +53,12 @@ class AuthFirebaseService implements AuthService {
     final imageURL = await _uploadUserImage(image, imageName);
 
     // 2. Atualizar os atributos do user
-    credential.user?.updateDisplayName(name);
+    await credential.user?.updateDisplayName(name);
     //A partir do user logado, vai ter acesso a imgURL
-    credential.user?.updatePhotoURL(imageURL);
+    await credential.user?.updatePhotoURL(imageURL);
+
+    // 3. Salvar o user no banco de dados (opcional)
+    await _saveChatUser(_toChatUser(credential.user!, imageURL));
   }
 
   @override
@@ -85,13 +88,27 @@ class AuthFirebaseService implements AuthService {
     return await imageRef.getDownloadURL();
   }
 
+  Future<void> _saveChatUser(ChatUser user) async {
+    final store = FirebaseFirestore.instance;
+
+    // Pega a referencia do banco
+    final docRef = store.collection('user').doc(user.id);
+
+    // Salva um obj com as informaçoes que deseja persistir no banco
+    return docRef.set({
+      'name': user.name,
+      'email': user.email,
+      'imageURL': user.imageUrl,
+    });
+  }
+
   //TO ChartUser
-  static ChatUser _toChatUser(User user) {
+  static ChatUser _toChatUser(User user, [String? imageURL]) {
     return ChatUser(
       id: user.uid,
       name: user.displayName ?? user.email!.split('@')[0],
       email: user.email!,
-      imageUrl: user.photoURL ?? 'assets/images/avatar.png',
+      imageUrl: imageURL ?? user.photoURL ?? 'assets/images/avatar.png',
     );
   }
 }
