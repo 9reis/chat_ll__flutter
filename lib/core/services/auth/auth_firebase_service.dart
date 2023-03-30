@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:chat_ll__flutter/core/models/chat_user.dart';
 import 'package:chat_ll__flutter/core/services/auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AuthFirebaseService implements AuthService {
   static ChatUser? _currentUser;
@@ -47,9 +48,14 @@ class AuthFirebaseService implements AuthService {
     );
     if (credential.user == null) return;
 
-    // Atualiza o nome do user
+    // 1. Upload da foto do user / Img recebida , nome da img
+    final imageName = '${credential.user!.uid}.jpg';
+    final imageURL = await _uploadUserImage(image, imageName);
+
+    // 2. Atualizar os atributos do user
     credential.user?.updateDisplayName(name);
-    //credential.user?.updatePhotoURL(photoURL);
+    //A partir do user logado, vai ter acesso a imgURL
+    credential.user?.updatePhotoURL(imageURL);
   }
 
   @override
@@ -64,6 +70,19 @@ class AuthFirebaseService implements AuthService {
   Future<void> logout() async {
     // Metodo responsável por fazer o logout da app
     FirebaseAuth.instance.signOut();
+  }
+
+  // Retorna a URL da imagem
+  Future<String?> _uploadUserImage(File? image, String imageName) async {
+    // Caso tenha passado uma imagem nula
+    if (image == null) return null;
+    //Pega o Storage
+    final storage = FirebaseStorage.instance;
+    //Pega o bucket padrão / Cria uma pasta / Nome da img que quer persistir
+    // Referencia da imagem / Caminho
+    final imageRef = storage.ref().child('user_image').child(imageName);
+    await imageRef.putFile(image).whenComplete(() {});
+    return await imageRef.getDownloadURL();
   }
 
   //TO ChartUser
