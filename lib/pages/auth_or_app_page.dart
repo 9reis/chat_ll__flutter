@@ -2,17 +2,23 @@
 
 import 'package:chat_ll__flutter/core/models/chat_user.dart';
 import 'package:chat_ll__flutter/core/services/auth/auth_service.dart';
+import 'package:chat_ll__flutter/core/services/notification/chat_notification_service.dart';
 import 'package:chat_ll__flutter/pages/auth_page.dart';
 import 'package:chat_ll__flutter/pages/chat_page.dart';
 import 'package:chat_ll__flutter/pages/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 class AuthOrAppPage extends StatelessWidget {
   const AuthOrAppPage({super.key});
   //Para poder interagir com o Firebase
   Future<void> init(BuildContext context) async {
     await Firebase.initializeApp();
+    Provider.of<ChatNotificationService>(
+      context,
+      listen: false,
+    ).init();
   }
 
   @override
