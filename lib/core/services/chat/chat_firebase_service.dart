@@ -16,16 +16,25 @@ class ChatFIrebaseService implements ChatService {
   Future<ChatMessage?> save(String text, ChatUser user) async {
     final store = FirebaseFirestore.instance;
 
+    final msg = ChatMessage(
+      id: '',
+      text: text,
+      createdAt: DateTime.now(),
+      userId: user.id,
+      userName: user.name,
+      userImageUrl: user.imageUrl,
+    );
+
     // Que é o tipo aceito pelo Firebase
-    final docRef = await store.collection('chat').add({
-      'text': text,
-      'createdAt': DateTime.now().toIso8601String(),
-      'userId': user.id,
-      'userName': user.name,
-      'userImageUrl': user.imageUrl
-    });
+    final docRef = await store
+        .collection('chat')
+        .withConverter(
+          fromFirestore: _fromFirestore,
+          toFirestore: _toFirestore,
+        )
+        .add(msg);
     final doc = await docRef.get();
-    final data = doc.data()!;
+    return doc.data()!;
   }
 
   //.withConverter(fromFirestore: fromFirestore, toFirestore: toFirestore)
@@ -48,10 +57,9 @@ class ChatFIrebaseService implements ChatService {
 
   // fromFirestore - Recebe os dados do Firestore
   // Map<String,dynamic> TO ChatMessage
-
   ChatMessage _fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> doc,
-    SnapshotOptions options,
+    SnapshotOptions? options,
   ) {
     return ChatMessage(
       id: doc.id,
