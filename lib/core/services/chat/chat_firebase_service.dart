@@ -14,7 +14,9 @@ class ChatFIrebaseService implements ChatService {
         .withConverter(
           fromFirestore: _fromFirestore,
           toFirestore: _toFirestore,
-        ) // Envia os dados sempre que a coleção for alterada
+        )
+        .orderBy('createdAt') //descending: true
+        // Envia os dados sempre que a coleção for alterada
         .snapshots();
 
     return snapshots.map((snapshot) {
