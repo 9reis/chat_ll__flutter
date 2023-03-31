@@ -27,15 +27,23 @@ class ChatFIrebaseService implements ChatService {
     });
     final doc = await docRef.get();
     final data = doc.data()!;
+  }
+  
+  //.withConverter(fromFirestore: fromFirestore, toFirestore: toFirestore)
 
-    // Map<String,dynamic> TO ChatMessage
+  // fromFirestore - Recebe os dados do Firestore
+  // Map<String,dynamic> TO ChatMessage
+  ChatMessage _fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> doc,
+    SnapshotOptions options,
+  ) {
     return ChatMessage(
       id: doc.id,
-      text: data['text'],
-      createdAt: DateTime.parse(data['createdAt']),
-      userId: data['userId'],
-      userName: data['userName'],
-      userImageUrl: data['userImageUrl'],
+      text: doc['text'],
+      createdAt: DateTime.parse(doc['createdAt']),
+      userId: doc['userId'],
+      userName: doc['userName'],
+      userImageUrl: doc['userImageUrl'],
     );
   }
 }
