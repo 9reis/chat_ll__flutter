@@ -26,9 +26,9 @@ class ChatNotificationService with ChangeNotifier {
   // Inicializa o push notification
   //Configura as msgs recebidas quando a app estiver aberta
   Future<void> init() async {
+    _configureTerminated();
     _configureForeground();
     _configureBackground();
-    _configureTerminated();
   }
 
 // Se tem permissão para executar push no tification - especifico para IOS
